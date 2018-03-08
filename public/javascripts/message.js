@@ -28,7 +28,7 @@ exports.messageEvents = function(eventInfo){
           replyToken:replyToken,
           messages:[{
             type:'text',
-            text:'名前を教えてください\n姓と名の間は空けないでください\n例:嶋川司'
+            text:'名前を教えてください\n姓と名は空けないでください\n例：嶋川司'
           }]
         }
       };
