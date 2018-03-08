@@ -75,7 +75,7 @@ exports.messageEvents = function(eventInfo){
                       console.log(response.body);
                   }
               });
-              connection.query(`UPDATE user SET name="${messageText}",flag=1)`,function(error,result_userID,fields){
+              connection.query(`UPDATE user SET name="${messageText}",flag=1 WHERE userID="${userID}"`,function(error,result_userID,fields){
                 if(error){throw error;}
                 else{
                   console.log('名前の登録成功');
