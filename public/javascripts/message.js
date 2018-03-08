@@ -39,6 +39,12 @@ exports.messageEvents = function(eventInfo){
               console.log(response.body);
           }
       });
+      connection.query(`INSERT INTO user (userID,name,flag) VALUES("${userID}","仮",0)`,function(error,result_userID,fields){
+        if(error){throw error;}
+        else{
+          
+        }
+      });
       break;
     default:
       connection.query(`SELECT userID FROM user WHERE name="${messageText}"`,function(error,result_userID,fields){
