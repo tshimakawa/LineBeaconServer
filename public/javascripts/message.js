@@ -50,7 +50,27 @@ exports.messageEvents = function(eventInfo){
       connection.query(`SELECT flag FROM user WHERE userID="${userID}"`,function(error,result_flag,fields){
         if(error) throw error;
         else if(result_flag.length == 0) {//ユーザーIDが登録されていない時
-
+          const options = {
+            url: 'https://api.line.me/v2/bot/message/reply',
+            headers: {
+              'Content-Type':'application/json',
+              'Authorization':'Bearer {0TFlC+RkUreO3Vo2NnuIpRZMHUQ+5FgGEmlWhSbU6QjjAZcBT5in0wcBDdZP7AQne1nSJ5pesVigCvVE2hZSGlieFoZL4YpUnfImwzrXrKjlqjogGqEQw62+/fCKDJgyeIFL86s6ewFpDjmzrMfGGgdB04t89/1O/w1cDnyilFU=}'},
+            json: true,
+            body: {
+              replyToken:replyToken,
+              messages:[{
+                type:'text',
+                text:'このアカウントは登録されていません\nチェックメニューから情報登録を行なってください'
+              }]
+            }
+          };
+          request.post(options, function(error, response, body){
+              if (!error && response.statusCode == 200) {
+                  console.log('success!');
+              } else {
+                  console.log(response.body);
+              }
+          });
         }else{
           switch(result_flag[0].flag){
             case 0://ユーザーIDは登録されているが名前が登録されていない時（情報登録リクエストを行なって名前を送信したとき）
