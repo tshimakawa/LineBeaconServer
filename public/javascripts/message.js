@@ -60,7 +60,7 @@ exports.messageEvents = function(eventInfo){
               replyToken:replyToken,
               messages:[{
                 type:'text',
-                text:'このアカウントは登録されていません\nチェックメニューから情報登録を行なってください'
+                text:'アカウントが登録されていません\nチェックメニューから\n情報登録を行なってください'
               }]
             }
           };
