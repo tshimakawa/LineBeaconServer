@@ -70,8 +70,8 @@ exports.messageEvents = function(eventInfo){
               console.log('userIDの登録成功');
             }
           });
-        });
-      }
+        }
+      });
     break;
     default:
       connection.query(`SELECT flag FROM user WHERE userID="${userID}"`,function(error,result_flag,fields){
