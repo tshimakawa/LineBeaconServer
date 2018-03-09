@@ -18,33 +18,60 @@ exports.messageEvents = function(eventInfo){
 
   switch(messageText){
     case '情報登録をします':
-      const options = {
-        url: 'https://api.line.me/v2/bot/message/reply',
-        headers: {
-          'Content-Type':'application/json',
-          'Authorization':'Bearer {0TFlC+RkUreO3Vo2NnuIpRZMHUQ+5FgGEmlWhSbU6QjjAZcBT5in0wcBDdZP7AQne1nSJ5pesVigCvVE2hZSGlieFoZL4YpUnfImwzrXrKjlqjogGqEQw62+/fCKDJgyeIFL86s6ewFpDjmzrMfGGgdB04t89/1O/w1cDnyilFU=}'},
-        json: true,
-        body: {
-          replyToken:replyToken,
-          messages:[{
-            type:'text',
-            text:'名前を教えてください\n姓と名は空けないでください\n例：嶋川司'
-          }]
-        }
-      };
-      request.post(options, function(error, response, body){
-          if (!error && response.statusCode == 200) {
-              console.log('success!');
-          } else {
-              console.log(response.body);
-          }
-      });
-      connection.query(`INSERT INTO user (userID,name,flag) VALUES("${userID}","仮",0)`,function(error,result_userID,fields){
-        if(error){throw error;}
-        else{
-          console.log('userIDの登録成功');
-        }
-      });
+      connection.query(`SELECT * FROM user WHERE userID="${userID}"`,function(error,result,fields){
+        if(error) throw error;
+        else if(result.length == 1){
+          const options = {
+            url: 'https://api.line.me/v2/bot/message/reply',
+            headers: {
+              'Content-Type':'application/json',
+              'Authorization':'Bearer {0TFlC+RkUreO3Vo2NnuIpRZMHUQ+5FgGEmlWhSbU6QjjAZcBT5in0wcBDdZP7AQne1nSJ5pesVigCvVE2hZSGlieFoZL4YpUnfImwzrXrKjlqjogGqEQw62+/fCKDJgyeIFL86s6ewFpDjmzrMfGGgdB04t89/1O/w1cDnyilFU=}'},
+            json: true,
+            body: {
+              replyToken:replyToken,
+              messages:[{
+                type:'text',
+                text:'このアカウントは\nすでに登録されています'
+              }]
+            }
+          };
+          request.post(options, function(error, response, body){
+              if (!error && response.statusCode == 200) {
+                  console.log('success!');
+              } else {
+                  console.log(response.body);
+              }
+          });
+        }else{
+          const options = {
+            url: 'https://api.line.me/v2/bot/message/reply',
+            headers: {
+              'Content-Type':'application/json',
+              'Authorization':'Bearer {0TFlC+RkUreO3Vo2NnuIpRZMHUQ+5FgGEmlWhSbU6QjjAZcBT5in0wcBDdZP7AQne1nSJ5pesVigCvVE2hZSGlieFoZL4YpUnfImwzrXrKjlqjogGqEQw62+/fCKDJgyeIFL86s6ewFpDjmzrMfGGgdB04t89/1O/w1cDnyilFU=}'},
+            json: true,
+            body: {
+              replyToken:replyToken,
+              messages:[{
+                type:'text',
+                text:'名前を教えてください\n姓と名は空けないでください\n例：嶋川司'
+              }]
+            }
+          };
+          request.post(options, function(error, response, body){
+              if (!error && response.statusCode == 200) {
+                  console.log('success!');
+              } else {
+                  console.log(response.body);
+              }
+          });
+          connection.query(`INSERT INTO user (userID,name,flag) VALUES("${userID}","仮",0)`,function(error,result_userID,fields){
+            if(error){throw error;}
+            else{
+              console.log('userIDの登録成功');
+            }
+          });
+        });
+      }
     break;
     default:
       connection.query(`SELECT flag FROM user WHERE userID="${userID}"`,function(error,result_flag,fields){
@@ -103,7 +130,6 @@ exports.messageEvents = function(eventInfo){
               });
             break;
             case 1:
-
             break;
             case 2:
               connection.query(`SELECT userID FROM user WHERE name="${messageText}"`,function(error,result_userID,fields){
